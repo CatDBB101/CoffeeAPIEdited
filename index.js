@@ -1,6 +1,8 @@
 const express = require("express");
+const cors = require("cors");
 const expressApp = express();
 
+expressApp.use(cors());
 expressApp.use(express.json());
 
 var pwd = "H3H3B0Y";
