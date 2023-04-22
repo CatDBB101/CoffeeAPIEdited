@@ -2,7 +2,7 @@ const express = require("express");
 const expressApp = express();
 const cors = require("cors");
 
-app.use(cors());
+expressApp.use(cors());
 expressApp.use(express.json());
 
 var pwd = "H3H3B0Y";
