@@ -1,6 +1,10 @@
 const express = require("express");
 const expressApp = express();
 expressApp.use(express.json());
+expressApp.use((req , res , next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers","Origin, X-Request-With, Content-Type, Accept");
+});
 
 var pwd = "H3H3B0Y";
 var menu_data = {
@@ -284,14 +288,6 @@ expressApp.get("/api/menu/:type/:id", (req, res) => {
         console.log("404");
         res.send("404");
     }
-});
-
-expressApp.options('/api/menu/:type/:id', function(req, res, next){
-   res.header('Access-Control-Allow-Origin', "*");
-   res.header('Access-Control-Allow-Methods', 'POST');
-   res.header("Access-Control-Allow-Headers", "accept, content-type");
-   res.header("Access-Control-Max-Age", "1728000");
-   return res.sendStatus(200);
 });
 
 // TODO : Port setting
