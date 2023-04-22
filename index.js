@@ -1,11 +1,9 @@
 const express = require("express");
 const expressApp = express();
+const cors = require("cors");
+
+app.use(cors());
 expressApp.use(express.json());
-expressApp.use((req , res , next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers","Origin, X-Request-With, Content-Type, Accept");
-    next();
-});
 
 var pwd = "H3H3B0Y";
 var menu_data = {
