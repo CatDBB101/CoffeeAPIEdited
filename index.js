@@ -2,9 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const expressApp = express();
 
-expressApp.use(cors());
-
-// expressApp.use(express.json());
+expressApp.use(express.json());
 
 var pwd = "H3H3B0Y";
 var menu_data = {
@@ -262,13 +260,13 @@ for (var i = 0 ; i < menu_data.ice.length ; i++) {
     menu_data.ice[i].price = menu_data.ice[i].id * 10;
 }
 
-expressApp.get("/", (req, res) => {
+expressApp.get("/", cors(),(req, res) => {
     console.log("Check status [202]");
     res.send("Status : OK [202]");
 })
 
 // TODO : Get Methods
-expressApp.get("/api/menu/:type", (req, res) => {
+expressApp.get("/api/menu/:type", cors(),(req, res) => {
     var type = req.params.type;
     if (["hot", "ice"].includes(type)) {
         console.log("202");
@@ -278,7 +276,7 @@ expressApp.get("/api/menu/:type", (req, res) => {
         res.send("404");
     }
 });
-expressApp.get("/api/menu/:type/:id", (req, res) => {
+expressApp.get("/api/menu/:type/:id", cors(), (req, res) => {
     var type = req.params.type;
     var id = Number(req.params.id) - 1;
     if (["hot", "ice"].includes(type) && !isNaN(id) && id >= 0 && id < menu_data[type].length) {
