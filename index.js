@@ -5,7 +5,6 @@ const expressApp = express();
 expressApp.use(cors());
 
 // expressApp.use(express.json());
-//expressApp.use(cors());
 
 var pwd = "H3H3B0Y";
 var menu_data = {
