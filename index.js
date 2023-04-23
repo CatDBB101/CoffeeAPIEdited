@@ -21,7 +21,7 @@ var menu_data = {
             "id": 1
         },
         {
-            "title": "Doppio",
+            "title": "Doppioo",
             "description": "A double shot of espresso, the doppio is perfect for putting extra pep in your step.",
             "ingredients": [
                 "Espresso"
@@ -127,58 +127,7 @@ var menu_data = {
             ],
             "image": "https://upload.wikimedia.org/wikipedia/commons/0/06/Latte_art.jpg",
             "id": 12
-        },
-        {
-            "title": "Irish",
-            "description": "Irish coffee consists of black coffee, whiskey and sugar, topped with whipped cream.",
-            "ingredients": [
-                "Coffee",
-                "Whiskey",
-                "Sugar",
-                "Cream"
-            ],
-            "image": "https://upload.wikimedia.org/wikipedia/commons/6/61/Irish_coffee_glass.jpg",
-            "id": 13
-        },
-        {
-            "title": "Sint aperiam odit es",
-            "description": "Expedita neque tempo",
-            "ingredients": [
-                "Coffee",
-                "Sugar",
-                "Cream"
-            ],
-            "image": "Image-path",
-            "id": 14
-        },
-        {
-            "title": "Nesciunt explicabo",
-            "description": "Aliqua Ut in facili",
-            "ingredients": [
-                "Sugar",
-                "Ice cream",
-                "Short pulled espresso",
-                "Foamed milk",
-                "Long pulled espresso"
-            ],
-            "image": "Image-path",
-            "id": 15
-        },
-        {
-            "title": "Rerum deleniti quis ",
-            "description": "Officia incidunt de",
-            "ingredients": [
-                "Coffee",
-                "Sugar",
-                "Steamed Milk",
-                "Ice cream",
-                "Short pulled espresso",
-                "Chocolate"
-            ],
-            "image": "Image-path",
-            "id": 16
         }
-
     ],
     "ice": [
         {
@@ -253,20 +202,20 @@ var menu_data = {
     ]
 };
 
-for (var i = 0 ; i < menu_data.hot.length ; i++) {
+for (var i = 0; i < menu_data.hot.length; i++) {
     menu_data.hot[i].price = menu_data.hot[i].id * 10;
 }
-for (var i = 0 ; i < menu_data.ice.length ; i++) {
+for (var i = 0; i < menu_data.ice.length; i++) {
     menu_data.ice[i].price = menu_data.ice[i].id * 10;
 }
 
-expressApp.get("/", cors(),(req, res) => {
+expressApp.get("/", cors(), (req, res) => {
     console.log("Check status [202]");
     res.send("Status : OK [202]");
 })
 
 // TODO : Get Methods
-expressApp.get("/api/menu/:type", cors(),(req, res) => {
+expressApp.get("/api/menu/:type", cors(), (req, res) => {
     var type = req.params.type;
     if (["hot", "ice"].includes(type)) {
         console.log("202");
