@@ -31,35 +31,6 @@ const UserDataPatern = new mongoose.Schema(
 
 const UserData = mongoose.model("user_datas", UserDataPatern);
 
-/*
-? 1) Length 8 - 12
-? 2) Have capital letter
-? 3) Have small letter
-? 4) Have number
-*/
-
-function CheckPasswordRule(password) {
-    var alphabet_capital = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
-    var alphabet_small = 'abcdefghijklmnopqrstuvwxyz'.split('');
-    var number = "1234567890".split("");
-    var status = [false, false, false, false];
-
-    if (password.length >= 8 && password.length <= 12) {
-        status[0] = true;
-        for (letter of password) {
-            if (alphabet_capital.includes(letter)) {
-                status[1] = true;
-            } else if (alphabet_small.includes(letter)) {
-                status[2] = true;
-            } else if (number.includes(letter)) {
-                status[3] = true;
-            }
-        }
-    }
-    return status;
-}
-const allEqual = arr => arr.every(v => v === arr[0])
-
 expressApp.use(express.json());
 expressApp.use(cookieParser());
 
@@ -320,10 +291,7 @@ expressApp.post("/api/account/register", cors(), async (req, res) => {
                 console.log("Ops something wrong with find function.")
             });
 
-        var password_rule_status = CheckPasswordRule(password);
-        console.log(password_rule_status);
-
-        if (!username_used && allEqual(password_rule_status) && password_rule_status[0] == true) { // ? Can create
+        if (!username_used) { // ? Can create
             await UserData.create({ // TODO : Create new account to database
                 username: username,
                 password: password
@@ -338,10 +306,8 @@ expressApp.post("/api/account/register", cors(), async (req, res) => {
                     res.send("401");
                 });
         } else { // ? Username used
-            if (username_used) { // ? Username used
+            if (username_used) { // ? Password rule wrong
                 res.send("UsernameUsed");
-            } else if (!(allEqual(password_rule_status)) || !(password_rule_status[0] == true)) { // ? Password rule wrong
-                res.send(password_rule_status);
             } else {
                 res.send("SomethingWrong");
             }
