@@ -259,7 +259,7 @@ expressApp.get("/api/menu/:type", cors(), (req, res) => {
         res.send(menu_data[type]);
     } else {
         console.log("404");
-        res.send("404");
+        res.send(["404"]);
     }
 });
 expressApp.get("/api/menu/:type/:id", cors(), (req, res) => {
@@ -270,7 +270,7 @@ expressApp.get("/api/menu/:type/:id", cors(), (req, res) => {
         res.send(menu_data[type][id]);
     } else {
         console.log("404");
-        res.send("404");
+        res.send(["404"]);
     }
 });
 
@@ -299,23 +299,23 @@ expressApp.post("/api/account/register", cors(), async (req, res) => {
             })
                 .then(result => {
                     res.cookie("LoginKey", result._id, { maxAge: 1000 * 60 * 60 });
-                    res.send("Created");
+                    res.send(["Created"]);
                 })
                 .catch(err => {
                     console.log(err);
                     console.log("Ops something wrong.");
-                    res.send("401");
+                    res.send(["401"]);
                 });
         } else { // ? Username used
             if (username_used) { // ? Password rule wrong
-                res.send("UsernameUsed");
+                res.send(["UsernameUsed"]);
             } else {
-                res.send("SomethingWrong");
+                res.send(["SomethingWrong"]);
             }
         }
     } else {
         console.log("402");
-        res.send("402");
+        res.send(["402"]);
     }
 
     res.end();
@@ -355,25 +355,25 @@ expressApp.get("/api/account/login", cors() , async (req,res) => {
             .then(data => {
                 console.log(data);
                 res.cookie("LoginKey",data[0]._id,{maxAge : 1000*60*60});
-                res.send("Logined");
+                res.send(["Logined"]);
             })
             .catch(err => {
                 console.log(err);
-                res.send("SomethingWrong");
+                res.send(["SomethingWrong"]);
             })
         } else {
             if (!username_correct) {
-                res.send("UsernameNotFound");
+                res.send(["UsernameNotFound"]);
             } else if (!password_correct) {
-                res.send("PasswordWrong");
+                res.send(["PasswordWrong"]);
             } else {
-                res.send("SomethingWrong")
+                res.send(["SomethingWrong"]);
             }
         }
 
     } else {
         console.log("402");
-        res.send("402");
+        res.send(["402"]);
     }
 });
 
