@@ -298,7 +298,8 @@ expressApp.post("/api/account/register", cors(), async (req, res) => {
                 password: password
             })
                 .then(result => {
-                    res.cookie("LoginKey", result._id, { maxAge: 1000 * 60 * 60 });
+                    res.setHeader('Set-Cookie', "LoginKey="+result._id);
+                    //res.cookie("LoginKey", result._id, { maxAge: 1000 * 60 * 60 });
                     res.send(["Created"]);
                 })
                 .catch(err => {
