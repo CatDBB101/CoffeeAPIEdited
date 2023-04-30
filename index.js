@@ -275,6 +275,7 @@ expressApp.get("/api/menu/:type/:id", cors(), (req, res) => {
 });
 
 // TODO : Account : Register / Create : Post Methods
+app.options('/api/account/register', cors());
 expressApp.post("/api/account/register", cors(), async (req, res) => {
     var username = req.body.username;
     var password = req.body.password;
@@ -288,7 +289,7 @@ expressApp.post("/api/account/register", cors(), async (req, res) => {
             })
             .catch(err => {
                 console.log(err);
-                console.log("Ops something wrong with find function.")
+                console.log("Ops something wrong with find function.");
             });
 
         if (!username_used) { // ? Can create
