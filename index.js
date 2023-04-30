@@ -1,8 +1,67 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const expressApp = express();
+const mongoose = require("mongoose");
+
+const url = "mongodb://0.0.0.0:27017/CoderCafeDatabase";
+mongoose.set("strictQuery", false);
+mongoose.connect(url, // TODO : Connect to mongoDB database
+    {
+        maxPoolSize: 50,
+        wtimeoutMS: 2500,
+        useNewUrlParser: true
+    },
+    (err) => {
+        if (err) {
+            console.log(err);
+            console.log("Connect faild (Hmm... something wrong)");
+        } else {
+            console.log("Connected to mongoDB");
+        }
+    }
+);
+
+const UserDataPatern = new mongoose.Schema(
+    {
+        username: String,
+        password: String
+    }
+);
+
+const UserData = mongoose.model("UserDatas", UserDataPatern);
+
+/*
+? 1) Length 8 - 12
+? 2) Have capital letter
+? 3) Have small letter
+? 4) Have number
+*/
+
+function CheckPasswordRule(password) {
+    var alphabet_capital = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
+    var alphabet_small = 'abcdefghijklmnopqrstuvwxyz'.split('');
+    var number = "1234567890".split("");
+    var status = [false, false, false, false];
+
+    if (password.length >= 8 && password.length <= 12) {
+        status[0] = true;
+        for (letter of password) {
+            if (alphabet_capital.includes(letter)) {
+                status[1] = true;
+            } else if (alphabet_small.includes(letter)) {
+                status[2] = true;
+            } else if (number.includes(letter)) {
+                status[3] = true;
+            }
+        }
+    }
+    return status;
+}
+const allEqual = arr => arr.every(v => v === arr[0])
 
 expressApp.use(express.json());
+expressApp.use(cookieParser());
 
 var pwd = "H3H3B0Y";
 var menu_data = {
@@ -209,13 +268,20 @@ for (var i = 0; i < menu_data.ice.length; i++) {
     menu_data.ice[i].price = menu_data.ice[i].id * 10;
 }
 
+expressApp.get("/get-cookie", cors(), (req, res) => {
+    res.cookie("Username", "BruhGmail@gmail.com", { maxAge: 1000 * 60 * 60 });
+    console.log(req.cookies["Username"]);
+    res.end();
+});
+
 expressApp.get("/", cors(), (req, res) => {
     console.log("Check status [202]");
     res.send("Status : OK [202]");
-})
+});
 
-// TODO : Get Methods
+// TODO : Menu : Get Methods
 expressApp.get("/api/menu/:type", cors(), (req, res) => {
+    console.log(req.cookies);
     var type = req.params.type;
     if (["hot", "ice"].includes(type)) {
         console.log("202");
@@ -234,6 +300,112 @@ expressApp.get("/api/menu/:type/:id", cors(), (req, res) => {
     } else {
         console.log("404");
         res.send("404");
+    }
+});
+
+// TODO : Account : Register / Create : Post Methods
+expressApp.post("/api/account/register", cors(), async (req, res) => {
+    var username = req.body.username;
+    var password = req.body.password;
+    var pwd_input = req.body.pwd;
+
+    if (pwd_input == pwd) {
+        var username_used = false;
+        await UserData.find({ "username": username })
+            .then(data => {
+                if (data.length) { username_used = true; }
+            })
+            .catch(err => {
+                console.log(err);
+                console.log("Ops something wrong with find function.")
+            });
+
+        var password_rule_status = CheckPasswordRule(password);
+        console.log(password_rule_status);
+
+        if (!username_used && allEqual(password_rule_status) && password_rule_status[0] == true) { // ? Can create
+            await UserData.create({ // TODO : Create new account to database
+                username: username,
+                password: password
+            })
+                .then(result => {
+                    res.cookie("LoginKey", result._id, { maxAge: 1000 * 60 * 60 });
+                    res.send("Created");
+                })
+                .catch(err => {
+                    console.log(err);
+                    console.log("Ops something wrong.");
+                    res.send("401");
+                });
+        } else { // ? Username used
+            if (username_used) { // ? Username used
+                res.send("UsernameUsed");
+            } else if (!(allEqual(password_rule_status)) || !(password_rule_status[0] == true)) { // ? Password rule wrong
+                res.send("UncorrectPasswordRule");
+            } else {
+                res.send("SomethingWrong");
+            }
+        }
+    } else {
+        console.log("402");
+        res.send("402");
+    }
+
+    res.end();
+});
+
+// TODO : Account : Login : Get Methods
+expressApp.get("/api/account/login", cors() , async (req,res) => {
+    var username = req.body.username;
+    var password = req.body.password;
+    var pwd_input = req.body.pwd;
+    if (pwd_input == pwd) {
+
+        var username_correct = false; // TODO : Check username correct
+        await UserData.find({"username" : username}) 
+        .then(data => {
+            if (data.length) {username_correct = true;}
+        })
+        .catch(err => {
+            console.log(err);
+            console.log("Ops something wrong with find function");
+        });
+
+        var password_correct = false; // TODO : Check password correct
+        await UserData.find({"username" : username , "password" : password})
+        .then(data => {
+            if (data.length) {password_correct = true;}
+        })
+        .catch(err => {
+            console.log(err);
+            console.log("Ops something wrong with find function");
+        })
+
+        console.log(username_correct,password_correct);
+
+        if (username_correct && password_correct) {
+            await UserData.find({"username" : username , "password" : password})
+            .then(data => {
+                res.cookie("LoginKey",data._id,{maxAge : 1000*60*60});
+                res.send("Logined");
+            })
+            .catch(err => {
+                console.log(err);
+                res.send("SomethingWrong");
+            })
+        } else {
+            if (!username_correct) {
+                res.send("UsernameNotFound");
+            } else if (!password_correct) {
+                res.send("PasswordWrong");
+            } else {
+                res.send("SomethingWrong")
+            }
+        }
+
+    } else {
+        console.log("402");
+        res.send("402");
     }
 });
 
