@@ -341,7 +341,7 @@ expressApp.post("/api/account/register", cors(), async (req, res) => {
             if (username_used) { // ? Username used
                 res.send("UsernameUsed");
             } else if (!(allEqual(password_rule_status)) || !(password_rule_status[0] == true)) { // ? Password rule wrong
-                res.send("UncorrectPasswordRule");
+                res.send(password_rule_status);
             } else {
                 res.send("SomethingWrong");
             }
