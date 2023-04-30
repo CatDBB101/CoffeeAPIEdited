@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 const expressApp = express();
 const mongoose = require("mongoose");
 
-const url = "mongodb://0.0.0.0:27017/CoderCafeDatabase";
+const url = "mongodb+srv://CoderCafeDatabase:H3H3B0Y_DB@codercafedatabase.feej77b.mongodb.net/CoderCafe";
 mongoose.set("strictQuery", false);
 mongoose.connect(url, // TODO : Connect to mongoDB database
     {
@@ -29,7 +29,7 @@ const UserDataPatern = new mongoose.Schema(
     }
 );
 
-const UserData = mongoose.model("UserDatas", UserDataPatern);
+const UserData = mongoose.model("user_datas", UserDataPatern);
 
 /*
 ? 1) Length 8 - 12
@@ -386,7 +386,8 @@ expressApp.get("/api/account/login", cors() , async (req,res) => {
         if (username_correct && password_correct) {
             await UserData.find({"username" : username , "password" : password})
             .then(data => {
-                res.cookie("LoginKey",data._id,{maxAge : 1000*60*60});
+                console.log(data);
+                res.cookie("LoginKey",data[0]._id,{maxAge : 1000*60*60});
                 res.send("Logined");
             })
             .catch(err => {
