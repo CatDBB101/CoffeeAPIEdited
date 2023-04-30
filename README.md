@@ -13,6 +13,8 @@ This API have 3 routes. (Just right now. I upload)
     
     2.```ice``` type means iced or cool coffee.
 - ```/api/menu/:type/:id``` This's API using to call just 1 menu. Every menu will have id field. You must press your id. You're wanna fetch in the paramiter ```id``` and ```BOOM!!!```. You can fetch. If you input the id don't have inside API's database. It will show ```404``` as string.
+- ```/api/account/login``` This's API to login CoderCafe's account. You must write body section to ```{ "pwd" : "H3H3B0Y" , "username" : "username" , "password": "password" }``` So ```pwd``` is API password if you don't write its or write wrong, You won't login. But if you everything not wrong. You(Users)'ll get cookie with ```LoginKey```.
+- ```/api/account/register``` This's API to register. Same as login API. You must write body section like login API. If everything good. API'll return ```Created```, But if not, It'll return error status.
 
 So every data'll return as json.
 
