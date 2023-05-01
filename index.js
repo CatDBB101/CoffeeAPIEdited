@@ -31,11 +31,13 @@ const UserDataPatern = new mongoose.Schema(
 
 const UserData = mongoose.model("user_datas", UserDataPatern);
 
-expressApp.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:5500");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+expressApp.use(cors());
+
+// expressApp.use(function (req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "http://localhost:5500");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+// });
 
 expressApp.use(cookieParser());
 expressApp.use(express.json());
