@@ -31,6 +31,12 @@ const UserDataPatern = new mongoose.Schema(
 
 const UserData = mongoose.model("user_datas", UserDataPatern);
 
+expressApp.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 expressApp.use(cookieParser());
 expressApp.use(express.json());
 
@@ -300,8 +306,8 @@ expressApp.post("/api/account/register", cors(), async (req, res) => {
                 .then(result => {
                     res.cookie("LoginKey", result._id, {
                         maxAge: 9000 * 60 * 60,
-                        httpOnly: true,
-                        secure: true
+                        // httpOnly: true,
+                        // secure: true
                     });
                     res.send(["Created"]);
                 })
