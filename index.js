@@ -35,7 +35,7 @@ expressApp.use(cors({
     origin: "http://localhost:5500",
     credentials: true,
     sameSite: "none",
-    secure: true,
+    // secure: true,
 }));
 
 // expressApp.use(function (req, res, next) {
