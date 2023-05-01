@@ -31,8 +31,8 @@ const UserDataPatern = new mongoose.Schema(
 
 const UserData = mongoose.model("user_datas", UserDataPatern);
 
-expressApp.use(express.json());
 expressApp.use(cookieParser());
+expressApp.use(express.json());
 
 var pwd = "H3H3B0Y";
 var menu_data = {
