@@ -35,7 +35,7 @@ expressApp.use(cors({
     origin: "*",
     credentials: true,
     sameSite: "none",
-    // secure: true,
+    secure: true,
 }));
 
 // expressApp.use(function (req, res, next) {
