@@ -32,7 +32,7 @@ const UserDataPatern = new mongoose.Schema(
 const UserData = mongoose.model("user_datas", UserDataPatern);
 
 expressApp.use(cors({
-    origin: "http://localhost:5500",
+    origin: ["http://localhost:5500","http://127.0.0.1:5500/registerPage.html"],
     // credentials: true,
     // sameSite: "none",
     // secure: true,
