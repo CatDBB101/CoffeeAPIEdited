@@ -298,7 +298,7 @@ expressApp.post("/api/account/register", cors(), async (req, res) => {
                 password: password
             })
                 .then(result => {
-                    res.cookie("LoginKey", result._id, { maxAge: 1000 * 60 * 60 });
+                    res.cookie("LoginKey", result._id, { maxAge: 1000 * 60 * 60, httpOnly: true });
                     res.send(["Created"]);
                 })
                 .catch(err => {
@@ -322,45 +322,45 @@ expressApp.post("/api/account/register", cors(), async (req, res) => {
 });
 
 // TODO : Account : Login : Get Methods
-expressApp.get("/api/account/login", cors() , async (req,res) => {
+expressApp.get("/api/account/login", cors(), async (req, res) => {
     var username = req.body.username;
     var password = req.body.password;
     var pwd_input = req.body.pwd;
     if (pwd_input == pwd) {
 
         var username_correct = false; // TODO : Check username correct
-        await UserData.find({"username" : username}) 
-        .then(data => {
-            if (data.length) {username_correct = true;}
-        })
-        .catch(err => {
-            console.log(err);
-            console.log("Ops something wrong with find function");
-        });
-
-        var password_correct = false; // TODO : Check password correct
-        await UserData.find({"username" : username , "password" : password})
-        .then(data => {
-            if (data.length) {password_correct = true;}
-        })
-        .catch(err => {
-            console.log(err);
-            console.log("Ops something wrong with find function");
-        })
-
-        console.log(username_correct,password_correct);
-
-        if (username_correct && password_correct) {
-            await UserData.find({"username" : username , "password" : password})
+        await UserData.find({ "username": username })
             .then(data => {
-                console.log(data);
-                res.cookie("LoginKey",data[0]._id,{maxAge : 1000*60*60});
-                res.send(["Logined"]);
+                if (data.length) { username_correct = true; }
             })
             .catch(err => {
                 console.log(err);
-                res.send(["SomethingWrong"]);
+                console.log("Ops something wrong with find function");
+            });
+
+        var password_correct = false; // TODO : Check password correct
+        await UserData.find({ "username": username, "password": password })
+            .then(data => {
+                if (data.length) { password_correct = true; }
             })
+            .catch(err => {
+                console.log(err);
+                console.log("Ops something wrong with find function");
+            })
+
+        console.log(username_correct, password_correct);
+
+        if (username_correct && password_correct) {
+            await UserData.find({ "username": username, "password": password })
+                .then(data => {
+                    console.log(data);
+                    res.cookie("LoginKey", data[0]._id, { maxAge: 1000 * 60 * 60 });
+                    res.send(["Logined"]);
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.send(["SomethingWrong"]);
+                })
         } else {
             if (!username_correct) {
                 res.send(["UsernameNotFound"]);
