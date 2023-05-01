@@ -281,8 +281,8 @@ expressApp.get("/api/menu/:type/:id", cors(), (req, res) => {
 });
 
 // TODO : Account : Register / Create : Post Methods
-expressApp.options('/api/account/register', cors());
-expressApp.post("/api/account/register", cors(), async (req, res) => {
+// expressApp.options('/api/account/register', cors());
+expressApp.post("/api/account/register", async (req, res) => {
     var username = req.body.username;
     var password = req.body.password;
     var pwd_input = req.body.pwd;
