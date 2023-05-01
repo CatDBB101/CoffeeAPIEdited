@@ -245,19 +245,19 @@ for (var i = 0; i < menu_data.ice.length; i++) {
     menu_data.ice[i].price = menu_data.ice[i].id * 10;
 }
 
-expressApp.get("/get-cookie", cors(), (req, res) => {
+expressApp.get("/get-cookie", (req, res) => {
     res.cookie("Username", "BruhGmail@gmail.com", { maxAge: 1000 * 60 * 60 });
     console.log(req.cookies["Username"]);
     res.end();
 });
 
-expressApp.get("/", cors(), (req, res) => {
+expressApp.get("/", (req, res) => {
     console.log("Check status [202]");
     res.send("Status : OK [202]");
 });
 
 // TODO : Menu : Get Methods
-expressApp.get("/api/menu/:type", cors(), (req, res) => {
+expressApp.get("/api/menu/:type", (req, res) => {
     console.log(req.cookies);
     var type = req.params.type;
     if (["hot", "ice"].includes(type)) {
@@ -268,7 +268,7 @@ expressApp.get("/api/menu/:type", cors(), (req, res) => {
         res.send(["404"]);
     }
 });
-expressApp.get("/api/menu/:type/:id", cors(), (req, res) => {
+expressApp.get("/api/menu/:type/:id", (req, res) => {
     var type = req.params.type;
     var id = Number(req.params.id) - 1;
     if (["hot", "ice"].includes(type) && !isNaN(id) && id >= 0 && id < menu_data[type].length) {
@@ -332,7 +332,7 @@ expressApp.post("/api/account/register", async (req, res) => {
 });
 
 // TODO : Account : Login : Get Methods
-expressApp.get("/api/account/login", cors(), async (req, res) => {
+expressApp.get("/api/account/login", async (req, res) => {
     var username = req.body.username;
     var password = req.body.password;
     var pwd_input = req.body.pwd;
