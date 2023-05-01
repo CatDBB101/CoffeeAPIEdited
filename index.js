@@ -34,7 +34,7 @@ const UserData = mongoose.model("user_datas", UserDataPatern);
 expressApp.use(cors({
     origin: "*",
     credentials: true,
-    // sameSite: "none",
+    sameSite: "none",
     // secure: true,
 }));
 
