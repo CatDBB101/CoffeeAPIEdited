@@ -286,6 +286,7 @@ expressApp.post("/api/account/register", async (req, res) => {
                         maxAge: 86400000,
                         httpOnly: true,
                         domain: "https://testing-eight-rosy.vercel.app",
+                        sameSite: "None",
                     });
                     res.send(["Created"]);
                 })
