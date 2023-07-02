@@ -285,8 +285,8 @@ expressApp.post("/api/account/register", async (req, res) => {
                     res.cookie("LoginKey", "Hello, World!", {
                         maxAge: 86400000,
                         httpOnly: true,
-                        domain: "https://testing-eight-rosy.vercel.app",
-                        sameSite: "None",
+                        domain: "http://127.0.0.1:5500",
+                        SameSite: "None",
                         sercure: true,
                     });
                     res.send(["Created"]);
