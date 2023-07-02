@@ -285,7 +285,7 @@ expressApp.post("/api/account/register", async (req, res) => {
                     res.cookie("LoginKey", "Hello, World!", {
                         maxAge: 86400000,
                         httpOnly: false,
-                        sameSite: "lax",
+                        sameSite: "none",
                         secure: true,
                     });
                     res.send(["Created"]);
