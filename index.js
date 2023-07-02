@@ -287,7 +287,7 @@ expressApp.post("/api/account/register", async (req, res) => {
                         httpOnly: true,
                         domain: "http://127.0.0.1:5500",
                         SameSite: "None",
-                        sercure: true,
+                        Secure: true,
                     });
                     res.send(["Created"]);
                 })
