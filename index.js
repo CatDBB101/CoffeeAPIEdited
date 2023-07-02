@@ -287,6 +287,7 @@ expressApp.post("/api/account/register", async (req, res) => {
                         httpOnly: true,
                         domain: "https://testing-eight-rosy.vercel.app",
                         sameSite: "None",
+                        sercure: true,
                     });
                     res.send(["Created"]);
                 })
