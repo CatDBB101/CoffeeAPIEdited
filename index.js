@@ -33,7 +33,7 @@ const UserData = mongoose.model("user_datas", UserDataPatern);
 
 expressApp.use(
     cors({
-        origin: "https://testing-eight-rosy.vercel.app",
+        origin: "http://127.0.0.1:5500",
         credentials: true,
         SameSite: "None",
         secure: true,
